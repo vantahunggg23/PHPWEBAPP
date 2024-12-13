@@ -1,13 +1,14 @@
-name: Deploy PHP 8.3 Application to Elastic Beanstalk
+name: CICD
 
 on:
   push:
     branches:
-      - main  # Hoặc branch mà bạn muốn triển khai lên
+      - main 
+      - release/*
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: [ ubuntu-latest ]
     
     steps:
     # Checkout mã nguồn từ GitHub repository
