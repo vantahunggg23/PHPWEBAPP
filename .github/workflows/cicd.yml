@@ -1,0 +1,36 @@
+name: CICD
+
+on:
+  push:
+    branches:
+      - main 
+      - release/*
+
+jobs:
+  deploy:
+    runs-on: [ ubuntu-latest ]
+    
+    steps:
+    # Checkout mã nguồn từ GitHub repository
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Cài đặt AWS CLI
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    # Cài đặt EB CLI (Elastic Beanstalk CLI)
+    - name: Install EB CLI
+      run: |
+        pip install awsebcli
+
+    # Tạo và đẩy ứng dụng lên Elastic Beanstalk
+    - name: Deploy to Elastic Beanstalk
+      run: |
+        eb init -p php-8.3 ${{ secrets.EB_APP_NAME }} --region ${{ secrets.AWS_REGION }}
+        eb use ${{ secrets.EB_ENV_NAME }}
+        eb deploy
