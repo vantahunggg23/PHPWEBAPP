@@ -12,7 +12,7 @@ document.getElementById('contactForm').addEventListener('submit', function(event
         alert(data);
         if (data === "Message sent successfully!") {
             document.getElementById('contactForm').reset();
-        }
+        }   
     })
     .catch(error => {
         console.error('Error:', error);
